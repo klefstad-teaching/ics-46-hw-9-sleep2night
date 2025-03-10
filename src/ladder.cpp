@@ -22,7 +22,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         if(exceeds_d(curr, d)) return false;
         swap(prev, curr)
     }
-    return prev[n] <= d;
+    return prev[len2] <= d;
 }
 
 bool exceeds_d(const vector<int>& v, int d){
@@ -33,6 +33,53 @@ bool exceeds_d(const vector<int>& v, int d){
 
 bool is_adjacent(const string& word1, const string& word2){
     return edit_distance_within(word1, word2, 1);
+}
+
+vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
+    string begin = to_lower(begin_word);
+    string end = to_lower(end_word);
+    if(begin == end) return {begin_word};
+    if(word_list.find(end) == word_list.end()) return {};
+
+    queue<vector<string>> ladder_q;
+    ladder_q.push({begin});
+    set<string> visited;
+    visited.insert(begin);
+    while(!ladder_q.empty()){
+        vector<string> ladder = ladder_q.front();
+        ladder_q.pop();
+        string last_word = ladder[ladder.size()-1];
+
+        for(const string& word : word_list){
+            if(is_adjacent(last_word, word) && visited.find(word) == visited.end()){
+                visited.insert(word);
+                vector<string> new_ladder = ladder;
+                new_ladder.push_back(word);
+                if(word == end) return new_ladder;
+                ladder_q.push(new_ladder);
+            }
+        }
+    }
+    return {};
+}
+string to_lower(const string& str){
+    string lowercase = str;
+    for(char& c : lowercase)
+        c = tolower(c);
+    return lowercase;
+}
+void load_words(set<string> & word_list, const string& file_name){
+    ifstream file(file_name);
+    if(!file.is_open()) {error("Function","load_words", "Can't open file"); return;}
+    string word;
+    while(file >> word)
+        word_list.insert(to_lower(word));
+    file.close();
+}
+
+void print_word_ladder(const vector<string>& ladder){
+    for(const string& s : ladder)
+        cout << s << " ";
 }
 
 define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
