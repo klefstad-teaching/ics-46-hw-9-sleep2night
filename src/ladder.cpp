@@ -20,7 +20,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
             else curr[j] = 1 + min({prev[j], curr[j-1], prev[j-1]});
         }
         if(exceeds_d(curr, d)) return false;
-        swap(prev, curr)
+        swap(prev, curr);
     }
     return prev[len2] <= d;
 }
@@ -82,11 +82,11 @@ void print_word_ladder(const vector<string>& ladder){
         cout << s << " ";
 }
 
-define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 
 void verify_word_ladder() {
     set<string> word_list;
-    load_words(word_list, "words.txt");
+    load_words(word_list, "src/words.txt");
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
     my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
