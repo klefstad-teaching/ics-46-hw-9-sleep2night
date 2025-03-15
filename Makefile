@@ -11,5 +11,5 @@ graph: src/dijkstras_main.cpp src/dijkstras.cpp
 	g++ $F src/dijkstras_main.cpp src/dijkstras.cpp -o graph
 
 clean:
-	/bin/rm -f $P $G *.o
+	/bin/rm -f $P $G output *.o
 
