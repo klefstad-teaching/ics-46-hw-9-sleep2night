@@ -68,6 +68,7 @@ string to_lower(const string& str){
         c = tolower(c);
     return lowercase;
 }
+
 void load_words(set<string> & word_list, const string& file_name){
     ifstream file(file_name);
     if(!file.is_open()) {error("Function","load_words", "Can't open file"); return;}
@@ -78,8 +79,12 @@ void load_words(set<string> & word_list, const string& file_name){
 }
 
 void print_word_ladder(const vector<string>& ladder){
-    for(const string& s : ladder)
-        cout << s << " ";
+    if(ladder){
+        cout << "Word ladder found: ";
+        for(const string& s : ladder)
+            cout << s << " ";
+        cout << endl;
+    }else cout << "No word ladder found." << endl;
 }
 
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
