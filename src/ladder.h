@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <algorithm>
+#include <limits.h>
 
 using namespace std;
 

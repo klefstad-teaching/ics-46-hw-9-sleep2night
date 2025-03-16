@@ -10,25 +10,22 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
     if(abs(len1 - len2) > d) return false;
 
-    vector<int> v1(len2 + 1), v2(len2 + 1);
+    vector<int> prev(len2 + 1, d + 1), curr(len2 + 1, d + 1);
+    prev[0] = 0;
 
-    for(int j = 0; j <=len2; ++j) v1[j] = j;
+    for(int i = 1; i <= len1; ++i){
+        curr[0] = i;
 
-    for(int i = 0; i < len1; ++i){
-        v2[0] = i + 1;
-        bool within_d = false;
-
-        for(int j = 0; j < len2; ++j){
-            int deleteCost = v1[j + 1] + 1;
-            int insertCost = v2[j] + 1;
-            int replaceCost = (str1[i] == str2[j]) ? v1[j] : v1[j] + 1;
-            v2[j + 1] = min({deleteCost, insertCost, replaceCost});
-            if(v2[j + 1] <= d) within_d = true;
+        for(int j = 1; j <= len2; ++j){
+            int deleteCost = prev[j] + 1;
+            int insertCost = curr[j - 1] + 1;
+            int replaceCost = (str1[i-1] == str2[j-1]) ? prev[j - 1] : prev[j - 1] + 1;
+            curr[j] = min({deleteCost, insertCost, replaceCost});
         }
-        if(!within_d) return false;
-        swap(v1, v2);
+        if(*min_element(curr.begin(), curr.end()) > d) return false;
+        prev = curr;
     }
-    return v1[len2] <= d;
+    return prev[len2] <= d;
 }
 
 bool is_adjacent(const string& word1, const string& word2){
@@ -89,8 +86,7 @@ void print_word_ladder(const vector<string>& ladder){
 void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "src/words.txt");
-    // cout << is_adjacent("cat","cab") << endl;
-    // vector<string> ladder = generate_word_ladder("cat", "dog", word_list);
+    // vector<string> ladder = generate_word_ladder("awake", "sleep", word_list);
     // print_word_ladder(ladder);
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
