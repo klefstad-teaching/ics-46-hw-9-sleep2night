@@ -32,18 +32,18 @@ bool exceeds_d(const vector<int>& v, int d){
 }
 
 bool is_adjacent(const string& word1, const string& word2){
-    string w1 = to_lower(word1);
-    string w2 = to_lower(word2);
-    return edit_distance_within(w1, w2, 1);
+    return edit_distance_within(word1, word2, 1);
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
-    if(begin_word == end_word || word_list.find(end_word) == word_list.end()) return {};
+    string begin = to_lower(begin_word);
+    string end = to_lower(end_word);
+    if(begin == end || word_list.find(end) == word_list.end()) return {};
 
     queue<vector<string>> ladder_q;
-    ladder_q.push({begin_word});
+    ladder_q.push({begin});
     set<string> visited;
-    visited.insert(begin_word);
+    visited.insert(begin);
     while(!ladder_q.empty()){
         vector<string> ladder = ladder_q.front();
         ladder_q.pop();
@@ -54,7 +54,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                 visited.insert(word);
                 vector<string> new_ladder = ladder;
                 new_ladder.push_back(word);
-                if(word == end_word) return new_ladder;
+                if(word == end) return new_ladder;
                 ladder_q.push(new_ladder);
             }
         }
