@@ -19,7 +19,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
             if(str1[i-1] == str2[j-1]) curr[j] = prev[j-1];
             else curr[j] = 1 + min({prev[j], curr[j-1], prev[j-1]});
         }
-        if(exceeds_d(curr, d)) return false;
+        if(curr[len2] > d) return false;
         swap(prev, curr);
     }
     return prev[len2] <= d;
@@ -27,8 +27,8 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
 bool exceeds_d(const vector<int>& v, int d){
     for(int val : v)
-        if(val <= d) return false;
-    return true;
+        if(val > d) return true;
+    return false;
 }
 
 bool is_adjacent(const string& word1, const string& word2){
