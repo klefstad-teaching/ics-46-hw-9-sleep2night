@@ -1,6 +1,5 @@
 *.o
 /main
-.nfs00ee000001a9a1cf000037ba
-output
-ladder
+/output
+/ladder
 
